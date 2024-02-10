@@ -4,6 +4,14 @@
  */
 package passwordmanager;
 
+import java.awt.Color;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author garre
@@ -33,6 +41,7 @@ public class Login extends Screen {
         jButton_Login = new javax.swing.JButton();
         jLabel_MainHeading = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel_ForgotPass = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,6 +64,20 @@ public class Login extends Screen {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Please enter your main password to login");
 
+        jLabel_ForgotPass.setText("Forgot password?");
+        jLabel_ForgotPass.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel_ForgotPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel_ForgotPassMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel_ForgotPassMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel_ForgotPassMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -63,12 +86,14 @@ public class Login extends Screen {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton_Login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPasswordField_MainPassword)
                     .addComponent(jLabel_MainPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPasswordField_MainPassword)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel_MainHeading)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel_MainHeading)
+                            .addComponent(jLabel_ForgotPass))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -78,11 +103,13 @@ public class Login extends Screen {
                 .addComponent(jLabel_MainHeading)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_MainPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPasswordField_MainPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel_ForgotPass)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(jButton_Login)
                 .addContainerGap())
         );
@@ -110,6 +137,44 @@ public class Login extends Screen {
     private void jButton_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoginActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_LoginActionPerformed
+
+    private void jLabel_ForgotPassMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_ForgotPassMouseEntered
+        jLabel_ForgotPass.setForeground(Color.blue);
+    }//GEN-LAST:event_jLabel_ForgotPassMouseEntered
+
+    private void jLabel_ForgotPassMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_ForgotPassMouseExited
+        jLabel_ForgotPass.setForeground(Color.black);
+    }//GEN-LAST:event_jLabel_ForgotPassMouseExited
+
+    // Forgot password label is clicked
+    private void jLabel_ForgotPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_ForgotPassMouseClicked
+        // Inform user that all the saved passwords will be removed
+        int reset = JOptionPane.showConfirmDialog(this, "Resetting the main password will also clear all saved passwords.\nAre you sure you want to reset the main password?", "Reset Password?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+        // If the user selects OK
+        if (reset == JOptionPane.OK_OPTION) {
+            // Clear the file
+            try (PrintWriter pwFile = new PrintWriter(new File("src/passwords/passwords.txt"))) {
+                pwFile.write("");
+            } catch (FileNotFoundException ex) {
+                // If the file doesn't exist
+                try {
+                    // Create the file
+                    File passwordFile = new File("src/passwords/passwords.txt");
+                    passwordFile.createNewFile();
+                } catch (IOException e) {
+                    // Output any IO errors that occur
+                    System.out.println("An error occured: " + e);
+                }
+            }
+            // Confirmation that the passwords were cleared
+            JOptionPane.showMessageDialog(this, "All passwords were cleared", "Password Reset", JOptionPane.INFORMATION_MESSAGE);
+            // Hide this screen
+            this.setVisible(false);
+            // Display the screen to create a new main password
+            new ResetPassword().setVisible(true);
+        }
+    }//GEN-LAST:event_jLabel_ForgotPassMouseClicked
 
     /**
      * @param args the command line arguments
@@ -149,6 +214,7 @@ public class Login extends Screen {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Login;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel_ForgotPass;
     private javax.swing.JLabel jLabel_MainHeading;
     private javax.swing.JLabel jLabel_MainPassword;
     private javax.swing.JPanel jPanel1;
