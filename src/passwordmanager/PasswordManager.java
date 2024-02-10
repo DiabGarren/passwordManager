@@ -17,6 +17,8 @@ public class PasswordManager {
 
     public static String passwordPath = "src/passwords/passwords.ini";
     public static String PASS_DELIMITER = "†";
+    
+    public static Password[] passwords = new Password[50];
 
     public static void main(String[] args) {
         // Try to open the passwords file

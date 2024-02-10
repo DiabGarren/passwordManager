@@ -4,6 +4,12 @@
  */
 package passwordmanager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author garre
@@ -16,6 +22,54 @@ public class Display extends Screen {
     public Display() {
         initComponents();
         CenterScreen();
+
+        if (passwords_length == 0) {
+            // Open the passwords file
+            try (
+                    Scanner scFile = new Scanner(new File(PasswordManager.passwordPath))) {
+                // Loop through each line
+                while (scFile.hasNextLine()) {
+                    // Get the time
+                    String line = scFile.nextLine();
+                    // Split the line into tokens
+                    Scanner scLine = new Scanner(line).useDelimiter(PasswordManager.PASS_DELIMITER);
+
+                    // Get each token
+                    String service = scLine.next();
+                    String username = scLine.next();
+                    String password = scLine.next();
+                    String seed = scLine.next();
+
+                    // Create a password object
+                    Password passwordObj = new Password(service, username, password, seed);
+
+                    passwords[passwords_length] = passwordObj;
+
+                    // If the current line doesn't contain the main password
+                    if (!service.equals("main")) {
+                        // Display the password information
+                        jTable1.setValueAt(passwords[passwords_length].service, passwords_length - 1, 0);
+                        jTable1.setValueAt(passwords[passwords_length].username, passwords_length - 1, 1);
+                        jTable1.setValueAt(passwords[passwords_length].decryptPassword(), passwords_length - 1, 2);
+                    }
+
+                    passwords_length++;
+
+                }
+            } catch (Exception ex) {
+                // Diplay any errors
+                System.out.println(ex);
+                // Exit the program
+                System.exit(0);
+            }
+        } else {
+            for (int i = 1; i < passwords_length; i++) {
+                // Display the password information
+                jTable1.setValueAt(passwords[i].service, i-1, 0);
+                jTable1.setValueAt(passwords[i].username, i-1, 1);
+                jTable1.setValueAt(passwords[i].decryptPassword(), i-1, 2);
+            }
+        }
     }
 
     /**
@@ -196,7 +250,10 @@ public class Display extends Screen {
 
     // When the 'Add' button is pressed
     private void jButton_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AddActionPerformed
-        // TODO add your handling code here:
+        // Hide this screen
+        this.setVisible(false);
+        // Display the 'AddPassword' screen
+        new AddPassword().setVisible(true);
     }//GEN-LAST:event_jButton_AddActionPerformed
 
     /**

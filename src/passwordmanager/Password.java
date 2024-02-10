@@ -57,7 +57,7 @@ public class Password {
     // Used for writing out all the password information
     @Override
     public String toString() {
-        return this.service + PasswordManager.PASS_DELIMITER + this.username + PasswordManager.PASS_DELIMITER + this.password + PasswordManager.PASS_DELIMITER + this.seed;
+        return this.service + PasswordManager.PASS_DELIMITER + this.username + PasswordManager.PASS_DELIMITER + this.password + PasswordManager.PASS_DELIMITER + this.seed + "\n";
     }
 
     // Creates an arrays of strings for each letter in the password

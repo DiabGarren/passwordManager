@@ -11,7 +11,9 @@ import java.awt.Toolkit;
  * @author garre
  */
 public class Screen extends javax.swing.JFrame {
-
+    
+    public static Password[] passwords = new Password[50];
+    public static int passwords_length = 0;
     /**
      * Creates new form Screen
      */
