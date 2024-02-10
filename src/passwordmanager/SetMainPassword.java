@@ -38,6 +38,7 @@ public class SetMainPassword extends Screen {
             // Close the file
             pwFile.close();
             
+            
             // Hide this screen
             this.setVisible(false);
             // Display the login screen
