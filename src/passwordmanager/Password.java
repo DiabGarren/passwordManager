@@ -12,13 +12,13 @@ import java.util.Random;
  */
 public class Password {
 
-    public static String PASS_DELIMITER = "##";
     String service, username, password, seed;
 
-    public Password(String service, String username, String password) {
+    public Password(String service, String username, String password, String seed) {
         this.service = service;
         this.username = username;
-        hashPassword(password);
+        this.password = password;
+        this.seed = seed;
     }
 
     public String getService() {
@@ -55,8 +55,7 @@ public class Password {
 
     @Override
     public String toString() {
-        return this.service + PASS_DELIMITER + this.username + PASS_DELIMITER + this.password + PASS_DELIMITER
-                + this.seed;
+        return this.service + PasswordManager.PASS_DELIMITER + this.username + PasswordManager.PASS_DELIMITER + this.password + PasswordManager.PASS_DELIMITER + this.seed;
     }
 
     private String[] toArray(String password) {
@@ -69,8 +68,8 @@ public class Password {
         return passArr;
     }
 
-    public void hashPassword(String password) {
-        String[] passArr = toArray(password);
+    public void hashPassword() {
+        String[] passArr = toArray(this.password);
         String[] newPassArr = passArr;
         Random rand = new Random();
         String seed = "";
@@ -101,7 +100,29 @@ public class Password {
     }
 
     public String decryptPassword() {
-        return "";
+        String[] passArr = toArray(this.password);
+        String[] seedArr = toArray(this.seed);
+        String[] newPassArr = passArr;
+
+        for (int i = 0; i < passArr.length; i++) {
+            switch (Integer.parseInt(seedArr[i])) {
+                case 1 -> {
+                    newPassArr = methodOneDecrypt(newPassArr);
+                }
+                case 2 -> {
+                    newPassArr = methodTwo(newPassArr);
+                }
+                case 3 -> {
+                    newPassArr = methodThree(newPassArr);
+                }
+            }
+        }
+        
+        String newPass = "";
+        for (String newPassPos : newPassArr) {
+            newPass += newPassPos;
+        }
+        return newPass;
     }
 
     // Change each character to the next in the decimal system (e.g. a -> b)
@@ -152,7 +173,24 @@ public class Password {
             int decimal = ((int) passArr[i].charAt(0));
 
             // Convert back to character after swapping
-            newPass[i] = new Character((char) (decEnd - (decimal-decStart))).toString();
+            newPass[i] = new Character((char) (decEnd - (decimal - decStart))).toString();
+        }
+        // Return the new array
+        return newPass;
+    }
+
+    // Change each character to the previous in the decimal system (e.g. b -> a)
+    private String[] methodOneDecrypt(String[] passArr) {
+        // Create a copy for the password array
+        String[] newPass = new String[passArr.length];
+
+        // Loop through the array
+        for (int i = 0; i < passArr.length; i++) {
+            // Convert character to decimal
+            int decimal = ((int) passArr[i].charAt(0));
+
+            // Convert back to character after decreasing by 1
+            newPass[i] = new Character((char) (decimal - 1)).toString();
         }
         // Return the new array
         return newPass;

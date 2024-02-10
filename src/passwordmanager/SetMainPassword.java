@@ -30,13 +30,14 @@ public class SetMainPassword extends Screen {
             String password = jPasswordField_MainPassword.getText();
 
             // Create a new Password object
-            Password mainPassword = new Password("main", "main", password);
+            Password mainPassword = new Password("main", "main", password, "");
+            mainPassword.hashPassword();
 
             // Write the password to the file
             pwFile.write(mainPassword.toString());
             // Close the file
             pwFile.close();
-
+            
             // Hide this screen
             this.setVisible(false);
             // Display the login screen

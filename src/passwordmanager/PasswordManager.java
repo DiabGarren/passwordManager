@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class PasswordManager {
 
     public static String passwordPath = "src/passwords/passwords.ini";
+    public static String PASS_DELIMITER = "†";
 
     public static void main(String[] args) {
         // Try to open the passwords file
@@ -31,22 +32,29 @@ public class PasswordManager {
                 // Get the first line
                 String mainLine = scFile.nextLine();
                 // Split the line into tokens at every '##'
-                Scanner scLine = new Scanner(mainLine).useDelimiter("##");
+                Scanner scLine = new Scanner(mainLine).useDelimiter(PASS_DELIMITER);
 
                 // Check if there are any tokens
                 if (!scLine.hasNext()) {
                     // If not
                     // Display the screen to create a main password
                     new SetMainPassword().setVisible(true);
+                } else {
+                    // Get all the tokens
+                    String service = scLine.next();
+                    String username = scLine.next();
+                    String password = scLine.next();
+                    String seed = scLine.next();
 
                     // Check is the first token equals 'main'
-                } else if (!"main".equals(scLine.next())) {
-                    // If not
-                    // Display the screen to create a main password
-                    new SetMainPassword().setVisible(true);
-                } else {
-                    // Display the login screen
-                    new Login().setVisible(true);
+                    if (!service.equals("main")) {
+                        // If not
+                        // Display the screen to create a main password
+                        new SetMainPassword().setVisible(true);
+                    } else {
+                        // Display the login screen
+                        new Login().setVisible(true);
+                    }
                 }
             }
             scFile.close();
