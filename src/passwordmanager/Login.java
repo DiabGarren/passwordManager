@@ -50,6 +50,12 @@ public class Login extends Screen {
         jLabel_MainPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel_MainPassword.setText("Password");
 
+        jPasswordField_MainPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordField_MainPasswordKeyPressed(evt);
+            }
+        });
+
         jButton_Login.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton_Login.setText("Login");
         jButton_Login.addActionListener(new java.awt.event.ActionListener() {
@@ -59,6 +65,7 @@ public class Login extends Screen {
         });
 
         jLabel_MainHeading.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel_MainHeading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_MainHeading.setText("Welcome to Java Password Manager");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -109,7 +116,7 @@ public class Login extends Screen {
                 .addComponent(jPasswordField_MainPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_ForgotPass)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton_Login)
                 .addContainerGap())
         );
@@ -138,15 +145,19 @@ public class Login extends Screen {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_LoginActionPerformed
 
+    // Mouse hover over 'Forgot password?'
     private void jLabel_ForgotPassMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_ForgotPassMouseEntered
+        // Change the text colour to blue
         jLabel_ForgotPass.setForeground(Color.blue);
     }//GEN-LAST:event_jLabel_ForgotPassMouseEntered
 
+    // Mouse hover exit 'Forgot password?'
     private void jLabel_ForgotPassMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_ForgotPassMouseExited
+        // Change the text colour to black
         jLabel_ForgotPass.setForeground(Color.black);
     }//GEN-LAST:event_jLabel_ForgotPassMouseExited
 
-    // Forgot password label is clicked
+    // Forgot password text is clicked
     private void jLabel_ForgotPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_ForgotPassMouseClicked
         // Inform user that all the saved passwords will be removed
         int reset = JOptionPane.showConfirmDialog(this, "Resetting the main password will also clear all saved passwords.\nAre you sure you want to reset the main password?", "Reset Password?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -154,13 +165,13 @@ public class Login extends Screen {
         // If the user selects OK
         if (reset == JOptionPane.OK_OPTION) {
             // Clear the file
-            try (PrintWriter pwFile = new PrintWriter(new File("src/passwords/passwords.txt"))) {
+            try (PrintWriter pwFile = new PrintWriter(new File(PasswordManager.passwordPath))) {
                 pwFile.write("");
             } catch (FileNotFoundException ex) {
                 // If the file doesn't exist
                 try {
                     // Create the file
-                    File passwordFile = new File("src/passwords/passwords.txt");
+                    File passwordFile = new File(PasswordManager.passwordPath);
                     passwordFile.createNewFile();
                 } catch (IOException e) {
                     // Output any IO errors that occur
@@ -171,10 +182,17 @@ public class Login extends Screen {
             JOptionPane.showMessageDialog(this, "All passwords were cleared", "Password Reset", JOptionPane.INFORMATION_MESSAGE);
             // Hide this screen
             this.setVisible(false);
-            // Display the screen to create a new main password
-            new ResetPassword().setVisible(true);
+            // Display the screen to create a main password
+            new SetMainPassword().setVisible(true);
         }
     }//GEN-LAST:event_jLabel_ForgotPassMouseClicked
+
+    private void jPasswordField_MainPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField_MainPasswordKeyPressed
+        // If the 'ENTER' key is pressed
+        if (evt.getKeyCode() == 10) {
+
+        }
+    }//GEN-LAST:event_jPasswordField_MainPasswordKeyPressed
 
     /**
      * @param args the command line arguments
