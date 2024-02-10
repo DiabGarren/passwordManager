@@ -104,20 +104,20 @@ public class Password {
         return "";
     }
 
-    // Change each character to the next in the decimal system
+    // Change each character to the next in the decimal system (e.g. a -> b)
     private String[] methodOne(String[] passArr) {
         // Create a copy for the password array
         String[] newPass = new String[passArr.length];
-        
+
         // Loop through the array
         for (int i = 0; i < passArr.length; i++) {
             // Convert character to decimal
             int decimal = ((int) passArr[i].charAt(0));
-            
+
             // Convert back to character after increasing by 1
-            // This will return the next char in the alphabet (e.g. a -> b)
-            newPass[i] = new Character((char) (decimal+1)).toString();
+            newPass[i] = new Character((char) (decimal + 1)).toString();
         }
+        // Return the new array
         return newPass;
     }
 
@@ -125,19 +125,36 @@ public class Password {
     private String[] methodTwo(String[] passArr) {
         // Create a copy for the password array
         String[] newPass = new String[passArr.length];
-        
+
         // Loop through the array
         for (int i = 0; i < passArr.length; i++) {
-            newPass[i] = passArr[passArr.length-1-i];
+            // The current position in the new array is equal to 
+            //  the same position from the end of the password array
+            newPass[i] = passArr[passArr.length - 1 - i];
         }
+        // Return the new array
         return newPass;
     }
 
+    // Swap each letter with the same postion from the end of the decimal system
+    //  (e.g. A -> ^)
     private String[] methodThree(String[] passArr) {
-        for (String pos : passArr) {
-            System.out.print(pos);
+        // Create a copy for the password array
+        String[] newPass = new String[passArr.length];
+
+        // Define decimal values for the start and end of the decimal system
+        int decStart = 33; // !
+        int decEnd = 126; // ~
+
+        // Loop through the array
+        for (int i = 0; i < passArr.length; i++) {
+            // Convert to decimal
+            int decimal = ((int) passArr[i].charAt(0));
+
+            // Convert back to character after swapping
+            newPass[i] = new Character((char) (decEnd - (decimal-decStart))).toString();
         }
-        System.out.println();
-        return passArr;
+        // Return the new array
+        return newPass;
     }
 }
