@@ -26,6 +26,48 @@ public class Login extends Screen {
         CenterScreen();
     }
 
+    private void login() {
+        // Get the text from the password field
+        String inputPassword = jPasswordField_MainPassword.getText();
+
+        // Open the passwords file
+        try (
+                Scanner scFile = new Scanner(new File(PasswordManager.passwordPath))) {
+            // Get the first line
+            String line = scFile.nextLine();
+            // Split the line into tokens 
+            Scanner scLine = new Scanner(line).useDelimiter(PasswordManager.PASS_DELIMITER);
+
+            // Get all the tokens
+            String service = scLine.next();
+            String username = scLine.next();
+            String password = scLine.next();
+            String seed = scLine.next();
+            scFile.close();
+
+            // Create a password object
+            Password mainPassword = new Password(service, username, password, seed);
+
+            // Check if the inputted password matches the saved password
+            if (mainPassword.comparePasswords(inputPassword)) {
+                // Hide this screen
+                this.setVisible(false);
+                // Diplay the 'Display' screen
+                new Display().setVisible(true);
+            } else {
+                // Reset the password field
+                jPasswordField_MainPassword.setText("");
+                // Infor the user that the inputted password was incorrect
+                jLabel_IncorrectPass.setText("The password is incorrect");
+            }
+        } catch (Exception ex) {
+            // Display any errors
+            System.out.println(ex);
+            // Exit the program
+            System.exit(0);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,6 +84,7 @@ public class Login extends Screen {
         jLabel_MainHeading = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel_ForgotPass = new javax.swing.JLabel();
+        jLabel_IncorrectPass = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,6 +128,9 @@ public class Login extends Screen {
             }
         });
 
+        jLabel_IncorrectPass.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel_IncorrectPass.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -93,9 +139,10 @@ public class Login extends Screen {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton_Login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel_MainPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPasswordField_MainPassword)
+                    .addComponent(jLabel_MainPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel_IncorrectPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel_MainHeading)
@@ -110,13 +157,15 @@ public class Login extends Screen {
                 .addComponent(jLabel_MainHeading)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel_IncorrectPass)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_MainPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPasswordField_MainPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_ForgotPass)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jButton_Login)
                 .addContainerGap())
         );
@@ -141,8 +190,9 @@ public class Login extends Screen {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // If the 'Confirm' button is pressed
     private void jButton_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoginActionPerformed
-        // TODO add your handling code here:
+        login();
     }//GEN-LAST:event_jButton_LoginActionPerformed
 
     // Mouse hover over 'Forgot password?'
@@ -190,7 +240,7 @@ public class Login extends Screen {
     private void jPasswordField_MainPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField_MainPasswordKeyPressed
         // If the 'ENTER' key is pressed
         if (evt.getKeyCode() == 10) {
-
+            login();
         }
     }//GEN-LAST:event_jPasswordField_MainPasswordKeyPressed
 
@@ -233,6 +283,7 @@ public class Login extends Screen {
     private javax.swing.JButton jButton_Login;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_ForgotPass;
+    private javax.swing.JLabel jLabel_IncorrectPass;
     private javax.swing.JLabel jLabel_MainHeading;
     private javax.swing.JLabel jLabel_MainPassword;
     private javax.swing.JPanel jPanel1;
