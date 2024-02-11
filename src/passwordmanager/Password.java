@@ -127,7 +127,7 @@ public class Password {
         String[] newPassArr = passArr;
 
         // Loop through tha passowrd array
-        for (int i = 0; i < passArr.length; i++) {
+        for (int i = passArr.length-1; i >= 0; i--) {
             // Execute different methods depending on the current seed value.
             switch (Integer.parseInt(seedArr[i])) {
                 case 1 -> {
