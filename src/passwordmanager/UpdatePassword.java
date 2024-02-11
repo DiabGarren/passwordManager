@@ -4,6 +4,12 @@
  */
 package passwordmanager;
 
+import java.io.File;
+import java.io.PrintWriter;
+import javax.swing.DefaultComboBoxModel;
+import static passwordmanager.Screen.passwords;
+import static passwordmanager.Screen.passwords_length;
+
 /**
  *
  * @author garre
@@ -16,6 +22,18 @@ public class UpdatePassword extends Screen {
     public UpdatePassword() {
         initComponents();
         CenterScreen();
+
+        String[] options = new String[passwords_length - 1];
+        for (int i = 1; i < passwords_length; i++) {
+            options[i - 1] = "Service: " + passwords[i].service + ", Username/Email: " + passwords[i].username;
+        }
+
+        // Set the combo box values
+        jComboBox1.setModel(new DefaultComboBoxModel(options));
+        // Set the text field values
+        jTextField_Service.setText(passwords[jComboBox1.getSelectedIndex() + 1].service);
+        jTextField_Username.setText(passwords[jComboBox1.getSelectedIndex() + 1].username);
+        jTextField_Password.setText(passwords[jComboBox1.getSelectedIndex() + 1].decryptPassword());
     }
 
     /**
@@ -30,6 +48,14 @@ public class UpdatePassword extends Screen {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton_Cancel = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField_Service = new javax.swing.JTextField();
+        jTextField_Username = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField_Password = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jButton_Update = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,6 +72,35 @@ public class UpdatePassword extends Screen {
             }
         });
 
+        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Service");
+
+        jTextField_Service.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jTextField_Username.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Username/Email");
+
+        jTextField_Password.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Password");
+
+        jButton_Update.setText("Update");
+        jButton_Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_UpdateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -53,10 +108,18 @@ public class UpdatePassword extends Screen {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton_Cancel)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
+                        .addComponent(jButton_Update))
+                    .addComponent(jTextField_Service)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField_Username)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField_Password))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -64,9 +127,25 @@ public class UpdatePassword extends Screen {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
-                .addComponent(jButton_Cancel)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField_Service, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField_Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField_Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_Cancel)
+                    .addComponent(jButton_Update))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -96,6 +175,49 @@ public class UpdatePassword extends Screen {
         // Display the 'Display' screen
         new Display().setVisible(true);
     }//GEN-LAST:event_jButton_CancelActionPerformed
+
+    // When the selected record is changed
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // Update the text fields values
+        jTextField_Service.setText(passwords[jComboBox1.getSelectedIndex() + 1].service);
+        jTextField_Username.setText(passwords[jComboBox1.getSelectedIndex() + 1].username);
+        jTextField_Password.setText(passwords[jComboBox1.getSelectedIndex() + 1].decryptPassword());
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
+    // When the 'Update' button is pressed
+    private void jButton_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_UpdateActionPerformed
+        // Create a password object
+        Password password = new Password(jTextField_Service.getText(), jTextField_Username.getText(), jTextField_Password.getText(), "");
+        // Encrypt the password
+        password.hashPassword();
+
+        System.out.println(password.password + ", " + password.seed);
+
+        // Update the value in the relevant position in the passwords array
+        passwords[jComboBox1.getSelectedIndex() + 1] = password;
+
+        try {
+            // Open file for writing
+            PrintWriter pwFile = new PrintWriter(new File(PasswordManager.passwordPath));
+            // Loop through passwords array
+            for (int i = 0; i < passwords_length; i++) {
+                // Write each password to the file
+                pwFile.write(passwords[i].toString());
+            }
+            // Close the file
+            pwFile.close();
+
+            // Hide this screen
+            this.setVisible(false);
+            // Display 'Display' screen
+            new Display().setVisible(true);
+        } catch (Exception ex) {
+            // Diplay any errors
+            System.out.println(ex);
+            // Exit the program
+            System.exit(0);
+        }
+    }//GEN-LAST:event_jButton_UpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,7 +256,15 @@ public class UpdatePassword extends Screen {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Cancel;
+    private javax.swing.JButton jButton_Update;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextField_Password;
+    private javax.swing.JTextField jTextField_Service;
+    private javax.swing.JTextField jTextField_Username;
     // End of variables declaration//GEN-END:variables
 }
