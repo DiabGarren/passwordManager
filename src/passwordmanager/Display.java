@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -268,18 +269,30 @@ public class Display extends Screen {
 
     // When the 'Update' button is pressed
     private void jButton_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_UpdateActionPerformed
-        // Hide this screen
-        this.setVisible(false);
-        // Display the 'UpdatePassword' screen
-        new UpdatePassword().setVisible(true);
+        // If there are passwords to update
+        if (passwords_length > 1) {
+            // Hide this screen
+            this.setVisible(false);
+            // Display the 'UpdatePassword' screen
+            new UpdatePassword().setVisible(true);
+        } else {
+            // Display error
+            JOptionPane.showMessageDialog(this, "There are no passwords to update.", "Cannot update", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_UpdateActionPerformed
 
     // When the 'Delete' button is pressed
     private void jButton_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DeleteActionPerformed
-        // Hide this screen
-        this.setVisible(false);
-        // Display the 'DeletePassword' screen
-        new DeletePassword().setVisible(true);
+        // If there are passwords to delete
+        if (passwords_length > 1) {
+            // Hide this screen
+            this.setVisible(false);
+            // Display the 'DeletePassword' screen
+            new DeletePassword().setVisible(true);
+        } else {
+            // Display error
+            JOptionPane.showMessageDialog(this, "There are no passwords to delete.", "Cannot delete", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_jButton_DeleteActionPerformed
 
     /**

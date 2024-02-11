@@ -23,6 +23,7 @@ public class UpdatePassword extends Screen {
         initComponents();
         CenterScreen();
 
+        // Create array for password options
         String[] options = new String[passwords_length - 1];
         for (int i = 1; i < passwords_length; i++) {
             options[i - 1] = "Service: " + passwords[i].service + ", Username/Email: " + passwords[i].username;
@@ -127,7 +128,7 @@ public class UpdatePassword extends Screen {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
