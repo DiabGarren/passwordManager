@@ -65,9 +65,9 @@ public class Display extends Screen {
         } else {
             for (int i = 1; i < passwords_length; i++) {
                 // Display the password information
-                jTable1.setValueAt(passwords[i].service, i-1, 0);
-                jTable1.setValueAt(passwords[i].username, i-1, 1);
-                jTable1.setValueAt(passwords[i].decryptPassword(), i-1, 2);
+                jTable1.setValueAt(passwords[i].service, i - 1, 0);
+                jTable1.setValueAt(passwords[i].username, i - 1, 1);
+                jTable1.setValueAt(passwords[i].decryptPassword(), i - 1, 2);
             }
         }
     }
@@ -179,8 +179,18 @@ public class Display extends Screen {
         });
 
         jButton_Update.setText("Update");
+        jButton_Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_UpdateActionPerformed(evt);
+            }
+        });
 
         jButton_Delete.setText("Delete");
+        jButton_Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_DeleteActionPerformed(evt);
+            }
+        });
 
         jButton_Logout.setText("Logout");
         jButton_Logout.addActionListener(new java.awt.event.ActionListener() {
@@ -255,6 +265,22 @@ public class Display extends Screen {
         // Display the 'AddPassword' screen
         new AddPassword().setVisible(true);
     }//GEN-LAST:event_jButton_AddActionPerformed
+
+    // When the 'Update' button is pressed
+    private void jButton_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_UpdateActionPerformed
+        // Hide this screen
+        this.setVisible(false);
+        // Display the 'UpdatePassword' screen
+        new UpdatePassword().setVisible(true);
+    }//GEN-LAST:event_jButton_UpdateActionPerformed
+
+    // When the 'Delete' button is pressed
+    private void jButton_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DeleteActionPerformed
+        // Hide this screen
+        this.setVisible(false);
+        // Display the 'DeletePassword' screen
+        new DeletePassword().setVisible(true);
+    }//GEN-LAST:event_jButton_DeleteActionPerformed
 
     /**
      * @param args the command line arguments
